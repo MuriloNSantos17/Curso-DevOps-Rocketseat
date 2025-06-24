@@ -1,9 +1,4 @@
-resource "aws_s3_bucket" "s3_bucket"{
-    bucket="${var.org_name}-murilo-bucket-iac-${terraform.workspace}" 
-
-    tags = {
-        Name = "Primeiro Bucket",
-        Iac = true,
-        context = "${terraform.workspace}"
-    }
+module "s3" {
+    source ="./modules/s3"
+    s3_bucket_name="rocketseat-iac"
 }
