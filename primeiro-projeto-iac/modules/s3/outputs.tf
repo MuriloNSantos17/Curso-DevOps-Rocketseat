@@ -1,5 +1,5 @@
 output "bucket_domain_name" {
-  value       = ""
+  value       = aws_s3_bucket.bucket.bucket_domain_name
   sensitive   = false
   description = "Nome de domínio do bucket S3"
 }
