@@ -2,3 +2,4 @@
 *.tfstate.*
 **/.terraform/*
 *.tfvars
+rocketseat-467022-8452d52d80e0.json
