@@ -1,62 +1,62 @@
+# Dependencies and generated files (at any directory depth)
+node_modules/
+dist/
+build/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+.cache/
+.npm/
+.pnpm-store/
+
+# Keep package manifests, lockfiles, source, tests and Kubernetes YAMLs
+# versioned. Ignore only local environment values, keeping examples.
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# Terraform local data and credentials; keep .terraform.lock.hcl
+.terraform/
 *.tfstate
 *.tfstate.*
-**/.terraform/*
 *.tfvars
+*.tfvars.json
+*.tfplan
+crash.log
+crash.*.log
 rocketseat-467022-8452d52d80e0.json
 
-# compiled output
-/dist
-/node_modules
-/build
-
-# Logs
-logs
+# Logs and runtime data
+logs/
 *.log
 npm-debug.log*
 pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+pids/
+*.pid
+*.seed
+*.pid.lock
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-# OS
-.DS_Store
-
-# Tests
-/coverage
-/.nyc_output
-
-# IDEs and editors
-/.idea
+# Local editors and operating-system files
+.vscode/
+.idea/
 .project
 .classpath
 .c9/
 *.launch
 .settings/
 *.sublime-workspace
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-
-# temp directory
-.temp
-.tmp
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Diagnostic reports (https://nodejs.org/api/report.html)
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+# Temporary directories
+.temp/
+.tmp/

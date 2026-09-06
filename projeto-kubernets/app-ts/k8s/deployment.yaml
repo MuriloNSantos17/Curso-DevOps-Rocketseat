@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: app-ts
+  namespace: primeira-aplicacao
+
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 20%
+      maxUnavailable: 10%
+  selector:
+    matchLabels:
+      api: app-ts
+  template:
+    metadata:
+      labels:
+        api: app-ts
+    spec:
+      containers:
+        - name: app-ts
+          image: murilonsantos/app-ts:v4
+          imagePullPolicy: IfNotPresent
+          envFrom: 
+            - configMapRef:
+                name: app-ts
+            - secretRef:
+                name: app-ts-secrets
+          # env:
+          #   - name: APP
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         name: app-ts
+          #         key: app-name
+          #   - name: API_KEY
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: app-ts-secrets
+          #         key: api-key
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
