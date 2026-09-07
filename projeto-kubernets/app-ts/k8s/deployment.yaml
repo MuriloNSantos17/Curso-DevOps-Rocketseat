@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: app-ts
-          image: murilonsantos/app-ts:v8
+          image: murilonsantos/app-ts:v12
           imagePullPolicy: IfNotPresent
           envFrom: 
             - configMapRef:
@@ -42,6 +42,33 @@ spec:
           #         key: api-key
           ports:
             - containerPort: 3000
+          startupProbe:
+            httpGet:
+              path: "/healthz"
+              port: 3000
+            failureThreshold: 3
+            successThreshold: 1
+            timeoutSeconds: 1
+            periodSeconds: 10
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 3000
+            failureThreshold: 3
+            successThreshold: 1
+            timeoutSeconds: 1
+            periodSeconds: 15
+            initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              path: "/healthz"
+              port: 3000
+            failureThreshold: 2
+            successThreshold: 1
+            timeoutSeconds: 1
+            periodSeconds: 10
+            initialDelaySeconds: 5
           resources:
             requests:
               cpu: 400m
