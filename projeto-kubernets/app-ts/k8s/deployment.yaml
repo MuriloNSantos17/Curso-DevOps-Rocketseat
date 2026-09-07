@@ -6,7 +6,7 @@ metadata:
   namespace: primeira-aplicacao
 
 spec:
-  replicas: 3
+  replicas: 6
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: app-ts
-          image: murilonsantos/app-ts:v4
+          image: murilonsantos/app-ts:v8
           imagePullPolicy: IfNotPresent
           envFrom: 
             - configMapRef:
@@ -44,8 +44,8 @@ spec:
             - containerPort: 3000
           resources:
             requests:
-              cpu: 100m
+              cpu: 400m
               memory: 128Mi
             limits:
-              cpu: 200m
+              cpu: 700m
               memory: 300Mi
