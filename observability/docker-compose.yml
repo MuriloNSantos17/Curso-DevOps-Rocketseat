@@ -9,7 +9,7 @@ services:
       - 9095
 
   tempo:
-    image: grafana/tempo:latest
+    image: grafana/tempo:2.10.8
     container_name: tempo
     restart: always
     volumes:
