@@ -14,7 +14,17 @@ services:
     restart: always
     volumes:
       - ./config/tempo/tempo.yaml:/etc/tempo.yaml
-    command: ["-config.file=/etc/tempo.yaml"]
+    command: [ "-config.file=/etc/tempo.yaml" ]
+
+  mimir:
+    image: grafana/mimir:latest
+    container_name: mimir
+    restart: always
+    ports:
+      - 9090:9090
+    command: [ "-config.file=/etc/mimir.yaml" ]
+    volumes:
+      - ./config/mimir/mimir.yaml:/etc/mimir.yaml
 
   grafana:
     image: grafana/grafana:latest
@@ -23,7 +33,7 @@ services:
     ports:
       - "3005:3000"
     volumes:
-      - ./config/grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+      - ./config/grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yml
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
@@ -32,3 +42,10 @@ services:
     depends_on:
       - loki
       - tempo
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - /var/log:/var/log
+    command: [ "-config.file=etc/promtail/config.yml" ]
