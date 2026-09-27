@@ -1,16 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { createWriteStream } from 'fs';
 import { log } from './infra/logger';
+import { metrics } from './tracer';
 @Injectable()
 export class AppService {
   getHello(): string {
-    log.info(
-      { 'http.request.method': 'GET', 'http.route': '/' },
-      'Requisição GET / recebida',
-    );
-    console.log("ConfigMap", process.env.APP)
-    console.log("Secret", process.env.API_KEY)
+    const metric = metrics.getMeter('app-rockeseat')
+    const successMetric = metric.createCounter('hello_success')
+    successMetric.add(1);
+
     return 'Hello World!';
+  }
+
+  metricTest(): string {
+    const metric = metrics.getMeter('app-rockeseat')
+    const errorMetric = metric.createCounter('hello_error')
+    errorMetric.add(1);
+
+    const histogram = metric.createHistogram('request_duration')
+    histogram.record(1000);
+
+    return 'Métrica adicionada';
   }
 
   getExample(): string {

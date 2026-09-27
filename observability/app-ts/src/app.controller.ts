@@ -10,6 +10,11 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Get('/metric-test')
+  metricTest(): string {
+    return this.appService.metricTest();
+  }
+
   @Get('/example-k8s')
   getExample(): string {
     return this.appService.getExample();
