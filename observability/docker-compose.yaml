@@ -3,10 +3,61 @@ services:
     image: grafana/loki:3.0.0
     container_name: loki
     restart: always
+    command: [ '-config.file=/etc/loki/loki.yaml', '-config.expand-env=true' ]
+    volumes:
+      - ./config/loki/loki.yaml:/etc/loki/loki.yaml
+    depends_on:
+      - minio
     ports:
       - 3100:3100
       - 7946
       - 9095
+
+  minio:
+    image: pgsty/minio:latest
+    container_name: minio
+    restart: always
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        mkdir -p /data/loki-data && \
+        mkdir -p /data/loki-ruler && \
+        minio server /data --console-address ':9001'
+    environment:
+      - MINIO_ROOT_USER=loki
+      - MINIO_ROOT_PASSWORD=++loki++
+    command: server ~ --address ':9000' --console-address ':9001'
+    ports:
+      - 9000:9000
+      - 9001:9001
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:9000/minio/health/live']
+      interval: 15s
+      timeout: 10s
+      retries: 3
+
+  bucket:
+    image: pgsty/mc:latest
+    container_name: bucket
+    depends_on:
+      - minio
+    entrypoint:
+      - /bin/sh
+      - -ec
+      - |
+        attempts=0
+        until /usr/bin/mc alias set minio http://minio:9000 loki '++loki++'; do
+          attempts=$$((attempts + 1))
+          if [ "$$attempts" -ge 30 ]; then
+            echo 'Falha ao conectar ao MinIO após 30 tentativas.' >&2
+            exit 1
+          fi
+          sleep 2
+        done
+        /usr/bin/mc mb --ignore-existing minio/loki
+        /usr/bin/mc anonymous set public minio/loki
+        
 
   tempo:
     image: grafana/tempo:2.10.8
