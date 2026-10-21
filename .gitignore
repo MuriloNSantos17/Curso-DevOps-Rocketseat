@@ -60,3 +60,4 @@ Desktop.ini
 # Temporary directories
 .temp/
 .tmp/
+.yarn
