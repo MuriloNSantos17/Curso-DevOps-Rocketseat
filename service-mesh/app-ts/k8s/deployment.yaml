@@ -18,6 +18,8 @@ spec:
     metadata:
       labels:
         app: app-service-mesh
+        service: app-service-mesh
+        version: V1
     spec:
       containers:
         - name: app-service-mesh

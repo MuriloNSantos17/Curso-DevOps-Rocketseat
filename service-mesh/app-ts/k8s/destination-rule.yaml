@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+
+metadata:
+  name: app-service-mesh-dr
+
+spec:
+  exportTo:
+  - "."
+  host: app-service-mesh-svc.app.svc.cluster.local
+  subsets: 
+  - name: V1
+    labels:
+      version: V1
+  - name: V2
+    labels:
+      version: V2
